@@ -1,20 +1,25 @@
 import React, { useEffect } from "react";
-import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import {
+  Button,
+  Container,
+  Typography,
+  Card,
+  CardMedia,
+  CardContent,
+} from "@mui/material";
+import "./App.css";
 
 function App() {
-  // Renders the entire app on the DOM
   const dispatch = useDispatch();
   const random = useSelector((store) => store.random);
-  //console.log(random);
 
   useEffect(() => {
     getGiphy();
   }, []);
 
   const getGiphy = () => {
-    //console.log("getGiphy ran");
     axios({
       method: "GET",
       url: "/random",
@@ -27,30 +32,45 @@ function App() {
       })
       .catch((err) => console.log(err));
   };
-  //console.log(random.data);
+
   return (
-    <div>
+    <Container maxWidth="sm">
       <header className="App-header">
-        <h1>Random Giphy API</h1>
-        <button onClick={getGiphy}>Random GIF</button>
+        <Typography variant="h3" gutterBottom>
+          Random Giphy API
+        </Typography>
+        <Button variant="contained" color="primary" onClick={getGiphy}>
+          Random GIF
+        </Button>
       </header>
       <br />
       <div className="returnStuff">
-        <p>Results go here</p>
+        <Typography variant="h6" gutterBottom>
+          Results:
+        </Typography>
         {random.data !== undefined && (
-          <div>
-            <img
-              className="image"
-              src={random.data.images.original.url}
+          <Card>
+            <CardMedia
+              component="img"
+              height="600"
+              image={random.data.images.original.url}
               alt="Random Giphy"
             />
-            <p>Title: {random.data.title}</p>
-            <p>Rating: {random.data.rating}</p>
-            <p>{random.data.embed_url}</p>
-          </div>
+            <CardContent>
+              <Typography variant="h5" component="div">
+                {random.data.title}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Rating: {random.data.rating}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Embed URL: {random.data.embed_url}
+              </Typography>
+            </CardContent>
+          </Card>
         )}
       </div>
-    </div>
+    </Container>
   );
 }
 
