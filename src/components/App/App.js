@@ -13,10 +13,6 @@ function App() {
     getGiphy();
   }, []);
 
-  // const randomize = () => {
-  //   console.log("Randomize function clicky click");
-  // };
-
   const getGiphy = () => {
     //console.log("getGiphy ran");
     axios({
@@ -36,13 +32,24 @@ function App() {
     <div>
       <header className="App-header">
         <h1>Random Giphy API</h1>
+        <button onClick={getGiphy}>Random GIF</button>
       </header>
       <br />
-      <button onClick={getGiphy}>Random GIF</button>
-      <p>Results go here</p>
-      {random.data !== undefined && (
-        <img src={random.data.images.original.url} alt="Random Giphy" />
-      )}
+      <div className="returnStuff">
+        <p>Results go here</p>
+        {random.data !== undefined && (
+          <div>
+            <img
+              className="image"
+              src={random.data.images.original.url}
+              alt="Random Giphy"
+            />
+            <p>Title: {random.data.title}</p>
+            <p>Rating: {random.data.rating}</p>
+            <p>{random.data.embed_url}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
